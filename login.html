@@ -1,0 +1,25 @@
+<!DOCTYPE html>
+<html lang="de">
+<head>
+    <meta charset="UTF-8">
+    <link rel="stylesheet" href="{{ url_for('static', filename='style.css') }}">
+    <title>Login | GrafflKathl</title>
+</head>
+
+<body>
+    <h1>GrafflKathl</h1>
+    <h2>D'Kathl woaß, wer's hat.</h2>
+
+    <h3>Anmelden</h3>
+
+    <form method="POST">
+        <label for="email">E-Mail:</label><br>
+        <input type="email" id="email" name="email" required><br><br>
+
+        <label for="passwort">Passwort:</label><br>
+        <input type="password" id="passwort" name="passwort" required><br><br>
+
+        <button type="submit">Anmelden</button>
+    </form>
+</body>
+</html>

@@ -1,0 +1,132 @@
+<!DOCTYPE html>
+<html lang="de">
+
+<head>
+    <meta charset="UTF-8">
+    <link rel="stylesheet" href="{{ url_for('static', filename='style.css') }}">
+    <title>Laufende Ausleihen | GrafflKathl</title>
+</head>
+
+<body>
+
+    <h1>GrafflKathl</h1>
+    <h2>Laufende Ausleihen</h2>
+
+    {% if ausleihen %}
+
+        {% for ausleihe in ausleihen %}
+
+            <div>
+
+                <h3>{{ ausleihe.gegenstand.name }}</h3>
+
+                <h4>Übergabe</h4>
+
+                {% if ausleihe.uebergabe_besitzer %}
+                    <p>✓ Besitzer hat die Übergabe bestätigt.</p>
+                {% else %}
+                    <p>⏳ Bestätigung des Besitzers steht noch aus.</p>
+                {% endif %}
+
+                {% if ausleihe.uebergabe_ausleiher %}
+                    <p>✓ Ausleiher hat die Übergabe bestätigt.</p>
+                {% else %}
+                    <p>⏳ Bestätigung des Ausleihers steht noch aus.</p>
+                {% endif %}
+
+                {# Jede Person sieht nur den Button für ihre eigene Übergabebestätigung. #}
+                {% if session["benutzer_id"] == ausleihe.besitzer_id
+                      and not ausleihe.uebergabe_besitzer %}
+
+                    <form
+                        action="/ausleihe/{{ ausleihe.id }}/uebergabe-bestaetigen"
+                        method="POST"
+                    >
+                        <button type="submit">
+                            Meine Übergabe bestätigen
+                        </button>
+                    </form>
+
+                {% elif session["benutzer_id"] == ausleihe.ausleiher_id
+                        and not ausleihe.uebergabe_ausleiher %}
+
+                    <form
+                        action="/ausleihe/{{ ausleihe.id }}/uebergabe-bestaetigen"
+                        method="POST"
+                    >
+                        <button type="submit">
+                            Meine Übergabe bestätigen
+                        </button>
+                    </form>
+
+                {% endif %}
+
+                {# Die Rückgabe wird erst nach beidseitig bestätigter Übergabe angezeigt. #}
+                {% if ausleihe.uebergabe_besitzer
+                      and ausleihe.uebergabe_ausleiher %}
+
+                    <p>
+                        <strong>
+                            ✓ Übergabe vollständig bestätigt.
+                        </strong>
+                    </p>
+
+                    <h4>Rückgabe</h4>
+
+                    {% if ausleihe.rueckgabe_besitzer %}
+                        <p>✓ Besitzer hat die Rückgabe bestätigt.</p>
+                    {% else %}
+                        <p>⏳ Bestätigung des Besitzers steht noch aus.</p>
+                    {% endif %}
+
+                    {% if ausleihe.rueckgabe_ausleiher %}
+                        <p>✓ Ausleiher hat die Rückgabe bestätigt.</p>
+                    {% else %}
+                        <p>⏳ Bestätigung des Ausleihers steht noch aus.</p>
+                    {% endif %}
+
+                    {# Jede Person sieht nur den Button für ihre eigene Rückgabebestätigung. #}
+                    {% if session["benutzer_id"] == ausleihe.besitzer_id
+                          and not ausleihe.rueckgabe_besitzer %}
+
+                        <form
+                            action="/ausleihe/{{ ausleihe.id }}/rueckgabe-bestaetigen"
+                            method="POST"
+                        >
+                            <button type="submit">
+                                Meine Rückgabe bestätigen
+                            </button>
+                        </form>
+
+                    {% elif session["benutzer_id"] == ausleihe.ausleiher_id
+                            and not ausleihe.rueckgabe_ausleiher %}
+
+                        <form
+                            action="/ausleihe/{{ ausleihe.id }}/rueckgabe-bestaetigen"
+                            method="POST"
+                        >
+                            <button type="submit">
+                                Meine Rückgabe bestätigen
+                            </button>
+                        </form>
+
+                    {% endif %}
+
+                {% endif %}
+
+            </div>
+
+            <hr>
+
+        {% endfor %}
+
+    {% else %}
+
+        <p>Aktuell gibt es keine laufenden Ausleihen.</p>
+
+    {% endif %}
+
+    <a href="/profil">Mein Profil</a>
+
+</body>
+</html>

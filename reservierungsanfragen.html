@@ -1,0 +1,78 @@
+<!DOCTYPE html>
+<html lang="de">
+
+<head>
+    <meta charset="UTF-8">
+    <link rel="stylesheet" href="{{ url_for('static', filename='style.css') }}">
+    <title>Reservierungsanfragen | GrafflKathl</title>
+</head>
+
+<body>
+
+    <h1>GrafflKathl</h1>
+    <h2>Reservierungsanfragen</h2>
+
+    {% if anfragen %}
+
+        {% for reservierung in anfragen %}
+
+            <div>
+
+                <h3>
+                    {{ reservierung.gegenstand.name }}
+                </h3>
+
+                <p>
+                    <strong>Angefragt von:</strong>
+
+                    {% if reservierung.benutzer.spitzname %}
+                        {{ reservierung.benutzer.spitzname }}
+                    {% else %}
+                        {{ reservierung.benutzer.name }}
+                    {% endif %}
+                </p>
+
+                <form
+                    action="/reservierung/{{ reservierung.id }}/ausleihe-starten"
+                    method="POST"
+                >
+                    <button type="submit">
+                        Ausleihe starten
+                    </button>
+                </form>
+
+                <form
+                    action="/reservierung/{{ reservierung.id }}/ablehnen"
+                    method="POST"
+                >
+                    <button type="submit">
+                        Anfrage ablehnen
+                    </button>
+                </form>
+
+            </div>
+
+            <hr>
+
+        {% endfor %}
+
+    {% else %}
+
+        <p>
+            Aktuell liegen keine Reservierungsanfragen vor.
+        </p>
+
+    {% endif %}
+
+    <a href="/gegenstaende">
+        Zur Graffl-Übersicht
+    </a>
+
+    <br><br>
+
+    <a href="/profil">
+        Mein Profil
+    </a>
+
+</body>
+</html>

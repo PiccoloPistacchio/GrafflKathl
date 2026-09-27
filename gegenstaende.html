@@ -1,0 +1,154 @@
+<!DOCTYPE html>
+<html lang="de">
+
+<head>
+    <meta charset="UTF-8">
+    <link rel="stylesheet" href="{{ url_for('static', filename='style.css') }}">
+    <title>Graffl | GrafflKathl</title>
+</head>
+
+<body>
+
+    <h1>GrafflKathl</h1>
+    <h2>Alle Graffl</h2>
+
+    <h3>Kategorien</h3>
+
+    <p>
+        <a href="/gegenstaende">Alle</a>
+        |
+        <a href="/gegenstaende?kategorie=Werkzeug">Werkzeug</a>
+        |
+        <a href="/gegenstaende?kategorie=Garten">Garten</a>
+        |
+        <a href="/gegenstaende?kategorie=Küche%20%26%20Haushalt">
+            Küche & Haushalt
+        </a>
+        |
+        <a href="/gegenstaende?kategorie=Freizeit%20%26%20Sport">
+            Freizeit & Sport
+        </a>
+        |
+        <a href="/gegenstaende?kategorie=Elektronik">
+            Elektronik
+        </a>
+        |
+        <a href="/gegenstaende?kategorie=Sonstiges">
+            Sonstiges
+        </a>
+    </p>
+
+    <hr>
+
+    {% if ausgewaehlte_kategorie %}
+        <h3>Kategorie: {{ ausgewaehlte_kategorie }}</h3>
+    {% endif %}
+
+    {% if gegenstaende %}
+
+        {% for gegenstand in gegenstaende %}
+
+            <div>
+
+                <h3>{{ gegenstand.name }}</h3>
+
+                <p>{{ gegenstand.beschreibung }}</p>
+
+                <p>
+                    <strong>Kategorie:</strong>
+                    {{ gegenstand.kategorie }}
+                </p>
+
+                <p>
+                    <strong>Besitzer:</strong>
+
+                    {% if gegenstand.besitzer.spitzname %}
+                        {{ gegenstand.besitzer.spitzname }}
+                    {% else %}
+                        {{ gegenstand.besitzer.name }}
+                    {% endif %}
+                </p>
+
+                {% if gegenstand.verfuegbar %}
+
+                    <p>
+                        <strong>Status:</strong>
+                        Verfügbar
+                    </p>
+
+                {% else %}
+
+                    <p>
+                        <strong>Status:</strong>
+                        Nicht verfügbar
+                    </p>
+
+                {% endif %}
+
+
+                {% if gegenstand.besitzer_id == session["benutzer_id"] %}
+
+                    <p><em>Dein Graffl</em></p>
+
+                    <a href="/gegenstand/{{ gegenstand.id }}/bearbeiten">
+                        Bearbeiten
+                    </a>
+
+                    <form
+                        action="/gegenstand/{{ gegenstand.id }}/loeschen"
+                        method="POST"
+                    >
+                        <button type="submit">
+                            Löschen
+                        </button>
+                    </form>
+
+                {% else %}
+
+                    {% if gegenstand.verfuegbar %}
+
+                        <form
+                            action="/gegenstand/{{ gegenstand.id }}/reservieren"
+                            method="POST"
+                        >
+                            <button type="submit">
+                                Reservieren
+                            </button>
+                        </form>
+
+                    {% else %}
+
+                        <p>
+                            Dieses Graffl ist aktuell nicht verfügbar.
+                        </p>
+
+                    {% endif %}
+
+                {% endif %}
+
+            </div>
+
+            <hr>
+
+        {% endfor %}
+
+    {% else %}
+
+        <p>
+            In dieser Kategorie wurde aktuell noch kein Graffl eingestellt.
+        </p>
+
+    {% endif %}
+
+    <a href="/gegenstand/anlegen">
+        Eigenes Graffl einstellen
+    </a>
+
+    <br><br>
+
+    <a href="/profil">
+        Mein Profil
+    </a>
+
+</body>
+</html>

@@ -1,0 +1,86 @@
+<!DOCTYPE html>
+<html lang="de">
+<head>
+    <meta charset="UTF-8">
+    <link rel="stylesheet" href="{{ url_for('static', filename='style.css') }}">
+    <title>Mein Profil | GrafflKathl</title>
+</head>
+
+<body>
+    <h1>GrafflKathl</h1>
+    <h2>Mein Profil</h2>
+
+    <p><strong>Name:</strong> {{ benutzer.name }}</p>
+    <p><strong>E-Mail:</strong> {{ benutzer.email }}</p>
+
+    <p>
+        <strong>Spitzname:</strong>
+        {% if benutzer.spitzname %}
+            {{ benutzer.spitzname }}
+        {% else %}
+            Noch nicht angegeben
+        {% endif %}
+    </p>
+
+    <p>
+        <strong>Adresse:</strong>
+        {% if benutzer.adresse %}
+            {{ benutzer.adresse }}
+        {% else %}
+            Noch nicht angegeben
+        {% endif %}
+    </p>
+
+    <hr>
+
+    {% if benutzer.spitzname or benutzer.adresse %}
+        <h3>Profil bearbeiten</h3>
+    {% else %}
+        <h3>Profildaten</h3>
+    {% endif %}
+
+    <form method="POST" action="{{ url_for('profil_bearbeiten') }}">
+
+        <label for="spitzname">Spitzname:</label>
+        <br>
+        <input
+            type="text"
+            id="spitzname"
+            name="spitzname"
+            value="{{ benutzer.spitzname or '' }}"
+            placeholder="z. B. Sepp"
+        >
+
+        <br><br>
+
+        <label for="adresse">Adresse:</label>
+        <br>
+        <input
+            type="text"
+            id="adresse"
+            name="adresse"
+            value="{{ benutzer.adresse or '' }}"
+            placeholder="z. B. Dorfstraße 12"
+        >
+
+        <br><br>
+
+        <button type="submit">Profil speichern</button>
+
+    </form>
+
+    <hr>
+
+    <h3>Navigation</h3>
+
+    <p><a href="/gegenstaende">Alle Graffl ansehen</a></p>
+    <p><a href="/gegenstand/anlegen">Eigenes Graffl einstellen</a></p>
+    <p><a href="/meine-reservierungen">Meine Reservierungen</a></p>
+    <p><a href="/reservierungsanfragen">Reservierungsanfragen</a></p>
+    <p><a href="/ausleihen">Laufende Ausleihen</a></p>
+
+    <hr>
+
+    <a href="/logout">Abmelden</a>
+</body>
+</html>

@@ -1,0 +1,41 @@
+<!DOCTYPE html>
+<html lang="de">
+<head>
+    <meta charset="UTF-8">
+    <link rel="stylesheet" href="{{ url_for('static', filename='style.css') }}">
+    <title>Meine Reservierungen | GrafflKathl</title>
+</head>
+
+<body>
+    <h1>GrafflKathl</h1>
+    <h2>Meine Reservierungen</h2>
+
+    {% if reservierungen %}
+
+        {% for reservierung in reservierungen %}
+
+            <div>
+                <h3>{{ reservierung.gegenstand.name }}</h3>
+                <p>{{ reservierung.gegenstand.beschreibung }}</p>
+
+                <form action="/reservierung/{{ reservierung.id }}/aufheben" method="POST">
+                    <button type="submit">Reservierung aufheben</button>
+                </form>
+            </div>
+
+            <hr>
+
+        {% endfor %}
+
+    {% else %}
+
+        <p>Du hast aktuell keine Graffl reserviert.</p>
+
+    {% endif %}
+
+    <a href="/gegenstaende">Zurück zu allen Graffl</a>
+    <br>
+    <a href="/profil">Mein Profil</a>
+
+</body>
+</html>

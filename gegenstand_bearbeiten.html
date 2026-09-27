@@ -1,0 +1,105 @@
+<!DOCTYPE html>
+<html lang="de">
+
+<head>
+    <meta charset="UTF-8">
+    <link rel="stylesheet" href="{{ url_for('static', filename='style.css') }}">
+    <title>Graffl bearbeiten | GrafflKathl</title>
+</head>
+
+<body>
+
+    <h1>GrafflKathl</h1>
+    <h2>Graffl bearbeiten</h2>
+
+    <form method="POST">
+
+        <label for="name">Name:</label>
+        <br>
+
+        <input
+            type="text"
+            id="name"
+            name="name"
+            value="{{ gegenstand.name }}"
+            required
+        >
+
+        <br><br>
+
+        <label for="beschreibung">Beschreibung:</label>
+        <br>
+
+        <textarea
+            id="beschreibung"
+            name="beschreibung"
+            rows="4"
+        >{{ gegenstand.beschreibung or '' }}</textarea>
+
+        <br><br>
+
+        <label for="kategorie">Kategorie:</label>
+        <br>
+
+        <select id="kategorie" name="kategorie" required>
+
+            <option
+                value="Werkzeug"
+                {% if gegenstand.kategorie == "Werkzeug" %}selected{% endif %}
+            >
+                Werkzeug
+            </option>
+
+            <option
+                value="Garten"
+                {% if gegenstand.kategorie == "Garten" %}selected{% endif %}
+            >
+                Garten
+            </option>
+
+            <option
+                value="Küche & Haushalt"
+                {% if gegenstand.kategorie == "Küche & Haushalt" %}selected{% endif %}
+            >
+                Küche & Haushalt
+            </option>
+
+            <option
+                value="Freizeit & Sport"
+                {% if gegenstand.kategorie == "Freizeit & Sport" %}selected{% endif %}
+            >
+                Freizeit & Sport
+            </option>
+
+            <option
+                value="Elektronik"
+                {% if gegenstand.kategorie == "Elektronik" %}selected{% endif %}
+            >
+                Elektronik
+            </option>
+
+            <option
+                value="Sonstiges"
+                {% if gegenstand.kategorie == "Sonstiges" %}selected{% endif %}
+            >
+                Sonstiges
+            </option>
+
+        </select>
+
+        <br><br>
+
+        <button type="submit">
+            Änderungen speichern
+        </button>
+
+    </form>
+
+    <br>
+
+    <a href="/gegenstaende">
+        Zurück zur Übersicht
+    </a>
+
+</body>
+</html>
